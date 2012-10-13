@@ -129,24 +129,7 @@ module Plist
     def unquoted_string
       puts "creating unquoted string #{inspect}" if @debug
 
-      if scan(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} ((\+|-)\d{4})?/)
-        puts "returning time" if @debug
-        require 'date'
-        DateTime.parse(matched)
-      elsif scan(/-?\d+?\.\d+\b/)
-        puts "returning float" if @debug
-        @parse_numbers ? matched.to_f : matched
-      elsif scan(/-?\d+\b/)
-        puts "returning int" if @debug
-        @parse_numbers ? matched.to_i : matched
-      elsif scan(/\b(true|false)\b/)
-        val = matched == 'true'
-        if @parse_bools
-          val
-        else
-          @parse_numbers ? BOOLS[val].to_i : BOOLS[val]
-        end
-      elsif eos?
+      if eos?
         error("unexpected end-of-string")
       else
         puts "returning string" if @debug
