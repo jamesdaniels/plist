@@ -157,7 +157,7 @@ module Plist
         # This doesn't really work. NKF's guess method is really, really bad
         # at discovering UTF8 when only a handful of characters are multi-byte.
         encoding = NKF.guess2(obj)
-        if encoding == NKF::ASCII && obj =~ /[\x80-\xff]/
+        if encoding == NKF::ASCII && obj =~ Regexp.new("[\x80-\xff]")
           encoding = NKF::UTF8
         end
         if [NKF::ASCII, NKF::BINARY, NKF::UNKNOWN].include?(encoding)
